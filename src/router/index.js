@@ -1,5 +1,5 @@
 // src/router/index.js
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHashHistory } from "vue-router";
 import routes from "./routes";
 import { defineAsyncComponent } from "vue";
 // const AsyncComponent = defineAsyncComponent({
@@ -12,7 +12,7 @@ import { defineAsyncComponent } from "vue";
 // AsyncComponent()
 const router = createRouter({
   //   history: createWebHistory(process.env.BASE_URL),
-  history: createWebHistory("/"),
+  history: createWebHashHistory("/"),
   scrollBehavior(to, from, savedPosition) {
     // 如果savedPosition存在（即用户是从forward/backward导航来的），则使用它
     if (savedPosition) {
