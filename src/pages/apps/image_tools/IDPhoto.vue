@@ -466,6 +466,7 @@ async function handleAI() {
     const response = await fetch(uploadUrl, {
       method: "POST", // or 'PUT'
       body: formData,
+      mode: 'cors',
     });
     // 解析响应为JSON
     const data = await response.json();
