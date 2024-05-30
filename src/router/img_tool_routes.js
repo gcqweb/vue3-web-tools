@@ -3,19 +3,19 @@ import { MailOutlined } from "@ant-design/icons-vue";
 
 // import App_template from "@/pages/app_template.vue";
 const img_tool_routes = [
-  {
-    path: "/qr",
-    name: "qr",
-    component: () => import("@/pages/apps/image_tools/qr.vue"),
+  // {
+  //   path: "/qr",
+  //   name: "qr",
+  //   component: () => import("@/pages/apps/image_tools/qr.vue"),
 
-    meta: {
-      label: "二维码制作",
-      icon: h(MailOutlined),
-      desc: "二维码制作",
-      app_icon: "icon-piliangshengchenghuancun",
-      go_live_time: new Date("2024-5-29"),
-    },
-  },
+  //   meta: {
+  //     label: "二维码制作",
+  //     icon: h(MailOutlined),
+  //     desc: "二维码制作",
+  //     app_icon: "icon-piliangshengchenghuancun",
+  //     go_live_time: new Date("2024-5-29"),
+  //   },
+  // },
   {
     path: "/img2base64",
     name: "img2base64",
