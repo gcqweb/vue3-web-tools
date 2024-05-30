@@ -1,0 +1,46 @@
+{
+  "hash": "e4706d1a",
+  "configHash": "75235cf4",
+  "lockfileHash": "1767d516",
+  "browserHash": "63c6c3f7",
+  "optimized": {
+    "vue": {
+      "src": "../../node_modules/vue/dist/vue.runtime.esm-bundler.js",
+      "file": "vue.js",
+      "fileHash": "12c23d2c",
+      "needsInterop": false
+    },
+    "es-drager": {
+      "src": "../../node_modules/es-drager/lib/index.es.js",
+      "file": "es-drager.js",
+      "fileHash": "820f1ff4",
+      "needsInterop": false
+    },
+    "vue-router": {
+      "src": "../../node_modules/vue-router/dist/vue-router.mjs",
+      "file": "vue-router.js",
+      "fileHash": "7061bb20",
+      "needsInterop": false
+    },
+    "pinia": {
+      "src": "../../node_modules/pinia/dist/pinia.mjs",
+      "file": "pinia.js",
+      "fileHash": "35992e22",
+      "needsInterop": false
+    },
+    "@ant-design/icons-vue": {
+      "src": "../../node_modules/@ant-design/icons-vue/es/index.js",
+      "file": "@ant-design_icons-vue.js",
+      "fileHash": "52634541",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-AYVSL3LM": {
+      "file": "chunk-AYVSL3LM.js"
+    },
+    "chunk-5A4OAFVX": {
+      "file": "chunk-5A4OAFVX.js"
+    }
+  }
+}

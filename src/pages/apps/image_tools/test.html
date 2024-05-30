@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <canvas id="canvas" width="800" height="600"></canvas>
+  </body>
+  <script>
+    // const canvas = document.getElementById("canvas");
+    // const ctx = canvas.getContext("2d");
+
+    // // 设置初始画笔参数
+    // ctx.lineWidth = 10; // 笔触宽度
+    // ctx.lineCap = "round"; // 线条两端为圆形
+    // ctx.strokeStyle = "#000"; // 默认颜色
+    // ctx.globalAlpha = 1; // 不透明度
+
+    // let isDrawing = false;
+    // let lastX = 0;
+    // let lastY = 0;
+
+    // // 开始绘制
+    // function startDraw(e) {
+    //   isDrawing = true;
+    //   [lastX, lastY] = [e.clientX, e.clientY];
+    // }
+
+    // // 绘制中
+    // function draw(e) {
+    //   if (!isDrawing) return;
+    //   ctx.beginPath();
+    //   ctx.moveTo(lastX, lastY);
+    //   // 模拟毛笔边缘，通过控制点创造轻微的曲线
+    //   let controlX = lastX + (e.clientX - lastX) / 2;
+    //   let controlY = lastY + (e.clientY - lastY) / 2;
+    //   ctx.quadraticCurveTo(lastX, lastY, controlX, controlY);
+    //   ctx.lineTo(e.clientX, e.clientY);
+    //   ctx.stroke();
+    //   [lastX, lastY] = [e.clientX, e.clientY];
+    // }
+
+    // // 结束绘制
+    // function stopDraw() {
+    //   isDrawing = false;
+    // }
+
+    // // 绑定事件
+    // canvas.addEventListener("mousedown", startDraw);
+    // canvas.addEventListener("mousemove", draw);
+    // canvas.addEventListener("mouseup", stopDraw);
+    // canvas.addEventListener("mouseout", stopDraw);
+
+    // // 可选：添加颜色和透明度变化等更复杂的模拟
+
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+
+    function drawPlushToy(x, y, radius, baseColor, hairColor) {
+      // 绘制毛绒玩具的基础形状（这里以圆形为例）
+      ctx.fillStyle = baseColor;
+      ctx.beginPath();
+      // ctx.arc(x, y, radius, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.closePath();
+
+      // 添加阴影效果，模拟立体感
+      ctx.shadowColor = "rgba(0, 0, 0, 0.15)";
+      ctx.shadowBlur = 10;
+      ctx.shadowOffsetX = 2;
+      ctx.shadowOffsetY = 2;
+
+      // 绘制随机毛发
+      for (let i = 0; i < 500; i++) {
+        ctx.strokeStyle = hairColor;
+        ctx.lineWidth = Math.random() * 2 + 1; // 随机线宽
+        ctx.beginPath();
+        let startX = x + radius * (Math.random() * 2 - 1);
+        let startY = y + radius;
+        let endX = startX + (Math.random() * 20 - 10); // 随机长度
+        let endY = startY + Math.random() * 50 - 25; // 随机高度偏移
+        ctx.moveTo(startX, startY);
+        ctx.lineTo(endX, endY);
+        ctx.stroke();
+      }
+
+      // 清除阴影设置
+      // ctx.shadowColor = "transparent";
+      // ctx.shadowBlur = 0;
+    }
+
+    // 清除画布
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // 绘制一个毛绒玩具
+    drawPlushToy(200, 200, 80, "#FFC0CB", "#FF69B4"); // 粉色基础，浅粉色毛发
+  </script>
+</html>
