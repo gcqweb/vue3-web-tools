@@ -412,7 +412,8 @@ const data = [
   width: 200px;
   position: relative;
   border: 1px #f5f5f5 solid;
-  border-radius: 8px;
+  /* border-radius: 8px; */
+  
   overflow: hidden;
 }
 .img_card:hover {
@@ -439,7 +440,8 @@ const data = [
   bottom: 0;
   left: 0;
   opacity: 0.7;
-  border-radius: 0 0 8px 8px;
+  /* border-radius: 0 0 8px 8px; */
+  border-radius: 0;
 }
 .img_card:hover .download_btn {
   display: block; /* 父元素被悬停时，子元素显示为block */
