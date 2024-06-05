@@ -218,7 +218,7 @@ const showDrawer = () => {
   height: 64px;
 }
 .category {
-  overflow-x: scroll;
+  overflow-x: auto;
   position: sticky;
   top: 64px;
   background: #f7f7fa;
