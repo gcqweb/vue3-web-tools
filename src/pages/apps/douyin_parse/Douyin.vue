@@ -376,8 +376,8 @@ const data = [
 
 <style scoped>
 .video-container {
-  width: 600px;
-  height: 337px;
+  max-width: 600px;
+  max-height: 337px;
 }
 
 .title {
@@ -393,12 +393,14 @@ const data = [
   justify-content: center;
   align-items: center;
   height: 100%;
+  width: 100%;
+  padding: 1rem;
 }
 .layout {
   text-align: center;
   height: 100%;
   width: 100%;
-  padding: 1rem;
+  /* padding: 1rem; */
 }
 
 :deep() .ant-card {
@@ -408,8 +410,11 @@ const data = [
   justify-content: space-between;
 }
 .img_card {
-  height: 300px;
-  width: 200px;
+  height: auto;
+  width: 100%;
+  max-height: 300px;
+  max-width: 200px;
+  object-fit: cover;
   position: relative;
   border: 1px #f5f5f5 solid;
   /* border-radius: 8px; */
@@ -426,13 +431,13 @@ const data = [
 }
 .img_card img,
 .img_card :deep() .ant-image {
-  /* height: 100%; */
+  height: 100%;
   object-fit: cover;
   width: 100%;
-  position: absolute;
-  top: 50%; /* 将图片顶部与容器顶部对齐 */
-  left: 50%; /* 将图片左边与容器左边对齐 */
-  transform: translate(-50%, -50%); /* 使用负边距将图片居中 */
+  /* position: absolute; */
+  /* top: 50%; 将图片顶部与容器顶部对齐 */
+  /* left: 50%; 将图片左边与容器左边对齐 */
+  /* transform: translate(-50%, -50%); 使用负边距将图片居中 */
 }
 .img_card .download_btn {
   display: none;
@@ -511,5 +516,12 @@ const data = [
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+@media screen and (max-width: 700px) {
+  .images_layout {
+  grid-template-columns:1fr 1fr;
+}
+
 }
 </style>
