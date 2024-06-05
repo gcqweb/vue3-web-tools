@@ -73,8 +73,9 @@
         </template>
         <template #title>Header</template>
       </a-table>
-      <div class="video_layout" v-show="parse_data.type === 'video'">
-        <div ref="videoContainer" class="video-container"></div>
+      <div class="video_layout" v-show="parse_data.type=== 'video'">
+        <video :src="video_url" controls class="video-container"></video>
+        <!-- <div ref="videoContainer" class="video-container"></div> -->
       </div>
       <div v-show="parse_data.type === 'images'">
         <div class="actions">
@@ -117,20 +118,20 @@
 
 <script setup>
 import { onMounted, onUnmounted, ref, reactive, watch } from "vue";
-import "xgplayer/dist/index.min.css";
-import Player from "xgplayer";
+// import "xgplayer/dist/index.min.css";
+// import Player from "xgplayer";
 import axios from "axios";
 //   import mp4 from "./a.mp4";
 import { message } from "ant-design-vue";
 import {
   DownloadOutlined,
-  CloudSyncOutlined,
-  ThunderboltOutlined,
+  // CloudSyncOutlined,
+  // ThunderboltOutlined,
   ExperimentOutlined,
 } from "@ant-design/icons-vue";
 import { notification } from "ant-design-vue";
 
-const videoContainer = ref(null);
+// const videoContainer = ref(null);
 const player = ref(null);
 const link_url = ref("");
 const video_url = ref("");
@@ -150,40 +151,40 @@ watch(
     }
   }
 );
-onMounted(() => {
-  player.value = new Player({
-    el: videoContainer.value,
-    // url: mp4,
-    // url: video_url.value,
-    url: video_url.value,
-    width: "600px",
-    height: "337px",
-    autoplay: false, //自动播放
-    miniprogress: true, //迷你进度条
-    screenShot: true, //截图
-    download: true, //下载
-    keyShortcut: true, //快捷键
-    playnext: true,
-    // commonStyle: {
-    //   // 进度条底色
-    //   progressColor: '#ff6600',
-    //   // 播放完成部分进度条底色
-    //   playedColor: 'FF1100',
-    //   // 缓存部分进度条底色
-    //   cachedColor: '',
-    //   // 进度条滑块样式
-    //   sliderBtnStyle: {},
-    //   // 音量颜色
-    //   volumeColor: '#ff9900'
-    // },
-    // controls: true,
-  });
+// onMounted(() => {
+//   player.value = new Player({
+//     el: videoContainer.value,
+//     // url: mp4,
+//     // url: video_url.value,
+//     url: video_url.value,
+//     width: "600px",
+//     height: "337px",
+//     autoplay: false, //自动播放
+//     miniprogress: true, //迷你进度条
+//     screenShot: true, //截图
+//     download: true, //下载
+//     keyShortcut: true, //快捷键
+//     playnext: true,
+//     // commonStyle: {
+//     //   // 进度条底色
+//     //   progressColor: '#ff6600',
+//     //   // 播放完成部分进度条底色
+//     //   playedColor: 'FF1100',
+//     //   // 缓存部分进度条底色
+//     //   cachedColor: '',
+//     //   // 进度条滑块样式
+//     //   sliderBtnStyle: {},
+//     //   // 音量颜色
+//     //   volumeColor: '#ff9900'
+//     // },
+//     // controls: true,
+//   });
 
-  // 离开页面暂停播放
-  window.addEventListener("beforeunload", () => {
-    player.value && player.value.pause();
-  });
-});
+//   // 离开页面暂停播放
+//   window.addEventListener("beforeunload", () => {
+//     player.value && player.value.pause();
+//   });
+// });
 
 onUnmounted(() => {
   player.value && player.value.destroy();
@@ -208,27 +209,27 @@ const getData = async (target_url) => {
       link: target_url, // 这是你要传递的参数
     },
   });
-  console.log(res);
+  // console.log(res);
   if (res.status === 200) {
-    console.log(res.data.parse_data, 8765554);
+    // console.log(res.data.parse_data, 8765554);
     // parse_data=res.data.parse_data
     // 使用扩展运算符将对象的所有属性赋值给响应式对象
     Object.assign(parse_data, res.data.parse_data);
     // 清空checkedImages
 
     if (res.data.parse_data.type === "video") {
-      player.value?.destroy();
-      player.value = new Player({
-        el: videoContainer.value,
-        url: res.data.parse_data.urls[2],
-        width: "600px",
-        height: "337px",
-        autoplay: false,
-        miniprogress: true,
-        screenShot: true,
-        download: true,
-        keyShortcut: true,
-      });
+      // player.value?.destroy();
+      // player.value = new Player({
+      //   el: videoContainer.value,
+      //   url: res.data.parse_data.urls[2],
+      //   width: "600px",
+      //   height: "337px",
+      //   autoplay: false,
+      //   miniprogress: true,
+      //   screenShot: true,
+      //   download: true,
+      //   keyShortcut: true,
+      // });
       const newUrl = res.data.parse_data.urls[0];
       // player.value.src = newUrl;
       video_url.value = newUrl;
@@ -247,14 +248,14 @@ const openNotification = (placement) => {
 };
 
 const parseHandle = async () => {
-  console.log(1);
+  // console.log(1);
   if (!link_url.value) {
     return;
   }
   // 更新视频链接
   let ShareLink = getShareLink(link_url.value);
   if (!ShareLink) return;
-  console.log(ShareLink);
+  // console.log(ShareLink);
   loading.value = true;
   await getData(ShareLink);
   loading.value = false;
@@ -262,7 +263,7 @@ const parseHandle = async () => {
 
 // 全选
 const selectAllItems = () => {
-  console.log(checkedImages);
+  // console.log(checkedImages);
   if (checkAll.value) {
     toggleSelectAllItems(false);
   } else {
@@ -270,6 +271,7 @@ const selectAllItems = () => {
   }
   checkAll.value = !checkAll.value;
 };
+
 const toggleSelectAllItems = (select) => {
   checkedImages.forEach((_, index) => {
     checkedImages[index] = select;
@@ -281,30 +283,67 @@ const invertSelection = () => {
   checkedImages.forEach((value, index) => {
     checkedImages[index] = !value;
   });
+    // 更新 checkAll 的状态
+    checkAll.value = checkedImages.every(value => value === true);
 };
+
 
 const downloadFn = (index) => {
   if (index === "bat") {
-    if (true) {
-      // message.error('请选择视频');
-      openNotification("top");
-      return;
-    }
+    console.log(checkedImages);
+
+    // if (true) {
+    //   // message.error('请选择视频');
+    //   openNotification("top");
+    //   return;
+    // }
+
     console.log("批量下载");
+    checkedImages.forEach((value, i) => {
+      if (value) {
+        let url = parse_data.urls[i];
+        createLink(url);
+      }
+    });
+    
   } else {
-    console.log(index);
+    // console.log(index);
     let url = parse_data.urls[index];
     createLink(url);
   }
 };
-const createLink = (url) => {
-  const link = document.createElement("a");
-  link.href = url;
-  link.target = "_blank"; // 将链接目标设置为新标签页
-  link.download = `${parse_data.desc}.${parse_data.format}`; // 可以根据需要修改文件名
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+// const createLink = (url) => {
+//   const link = document.createElement("a");
+//   link.href = url;
+//   link.target = "_blank"; // 将链接目标设置为新标签页
+//   link.download = `${parse_data.desc}.${parse_data.format}`; // 可以根据需要修改文件名
+//   document.body.appendChild(link);
+//   link.click();
+//   document.body.removeChild(link);
+// };
+const createLink = async (url) => {
+    try {
+        // 使用 fetch 获取图片
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        // 将图片转换为 blob
+        const blob = await response.blob();
+        // 创建一个对象URL
+        const objectURL = URL.createObjectURL(blob);
+        // 创建一个下载链接
+        const link = document.createElement("a");
+        link.href = objectURL;
+        link.download = `${parse_data.desc}.${parse_data.format}`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        // 释放对象URL
+        URL.revokeObjectURL(objectURL);
+    } catch (error) {
+        console.error('There was a problem with the fetch operation:', error);
+    }
 };
 const columns = [
   {
