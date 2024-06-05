@@ -80,7 +80,7 @@
                   >@gcqweb</span
                 >
               </div>
-              <a-tooltip
+              <!-- <a-tooltip
                 placement="bottomLeft"
                 class="custom-tooltip"
                 color="cyan"
@@ -89,7 +89,7 @@
               >
                 <template #title v-if="app?.meta?.desc">{{
                   app?.meta.desc
-                }}</template>
+                }}</template> -->
                 <a-typography-paragraph
                   style="height: 2.7rem;color:#000;"
                   :ellipsis="{ rows: 2 }"
@@ -97,7 +97,7 @@
                     app?.meta?.desc ? app?.meta?.desc : `Hello,Ant Design!`
                   "
                 />
-              </a-tooltip>
+              <!-- </a-tooltip> -->
 
               <div>
                 <a-tag @click.stop="info('标签')" style="user-select: none"
