@@ -414,11 +414,10 @@ const data = [
   width: 100%;
   max-height: 300px;
   max-width: 200px;
-  object-fit: cover;
   position: relative;
   border: 1px #f5f5f5 solid;
   /* border-radius: 8px; */
-  
+  display: flex;
   overflow: hidden;
 }
 .img_card:hover {
@@ -429,15 +428,19 @@ const data = [
   background: rgb(255 255 255 / 50%);
   background: unset;
 }
-.img_card img,
+
 .img_card :deep() .ant-image {
-  height: 100%;
-  object-fit: cover;
+  height: auto;
   width: 100%;
   /* position: absolute; */
   /* top: 50%; 将图片顶部与容器顶部对齐 */
   /* left: 50%; 将图片左边与容器左边对齐 */
   /* transform: translate(-50%, -50%); 使用负边距将图片居中 */
+}
+img,:deep() .ant-image-img{
+  height: 100%;
+  object-fit: contain;
+  width: 100%;
 }
 .img_card .download_btn {
   display: none;
