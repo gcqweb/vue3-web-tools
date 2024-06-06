@@ -60,6 +60,7 @@ declare module 'vue' {
     ATextarea: typeof import('ant-design-vue/es')['Textarea']
     ATooltip: typeof import('ant-design-vue/es')['Tooltip']
     ATypographyParagraph: typeof import('ant-design-vue/es')['TypographyParagraph']
+    ATypographyText: typeof import('ant-design-vue/es')['TypographyText']
     ATypographyTitle: typeof import('ant-design-vue/es')['TypographyTitle']
     AUpload: typeof import('ant-design-vue/es')['Upload']
     AUploadDragger: typeof import('ant-design-vue/es')['UploadDragger']

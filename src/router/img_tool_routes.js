@@ -96,7 +96,7 @@ const img_tool_routes = [
   {
     path: "/grid",
     name: "grid",
-    component: () => import("@/pages/apps/image_tools/宫格切图.vue"),
+    component: () => import("@/pages/apps/image_tools/img_grid_cut.vue"),
 
     meta: {
       label: "宫格切图",

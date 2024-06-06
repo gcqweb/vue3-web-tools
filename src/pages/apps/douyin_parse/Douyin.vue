@@ -2,17 +2,13 @@
   <section class="dy-parse">
     <div class="layout">
       <a-typography-title :level="1" class="title">抖音解析</a-typography-title>
-      <div style="margin-bottom: 1rem; font-size: 14px; color: #888">
-        支持抖音视频解析，视频下载，图集下载
-      </div>
-      <!-- <a-space > -->
+      <p>支持 抖音 短视频、图集解析和下载</p>
       <a-affix :offset-top="10">
         <a-input
           class="url_input"
           v-model:value="link_url"
-          placeholder="请输入抖音链接"
+          placeholder="请输入抖音分享链接"
           size="large"
-          style="width: 500px; max-width: 100%"
           allow-clear
           @pressEnter="parseHandle"
         >
@@ -26,68 +22,26 @@
 
       <a-divider />
       <a-spin v-if="loading" size="large" />
-      <span v-else>{{ parse_data.desc }}</span>
+      <p v-else>{{ parse_data.desc}}</p>
 
-      <a-table
-        v-if="false"
-        style="display: none"
-        :columns="columns"
-        :data-source="data"
-        bordered
-        :pagination="false"
-      >
-        <template #headerCell="{ column }">
-          <template v-if="column.key === '全选'">
-            <a-space>
-              <a-checkbox
-                v-model:checked="isChecked"
-                @change="handleCheckAllChange"
-              />
-              <span>全选</span>
-            </a-space>
-          </template>
-          <template v-else-if="column.key === '目标大小'"> 目标大小 </template>
-        </template>
-        <template #bodyCell="{ column, text }">
-          <template v-if="column.dataIndex === 'isChecked'">
-            <a-space>
-              <a-checkbox />
-              <!-- v-model:checked="record.isChecked" /> -->
-              <a-avatar
-                shape="square"
-                src="https://gw.alipayobjects.com/zos/antfincdn/LlvErxo8H9/photo-1503185912284-5271ff81b9a8.webp"
-                @click="handlePreview(record)"
-              />
-            </a-space>
-          </template>
-          <template v-if="column.dataIndex === 'action'">
-            <a-space>
-              <a-button size="small" @click="itemPreview(record)"
-                >预览</a-button
-              >
-              <a-button @click="downloadImages(record)" size="small"
-                >下载</a-button
-              >
-            </a-space>
-          </template>
-        </template>
-        <template #title>Header</template>
-      </a-table>
-      <div class="video_layout" v-show="parse_data.type=== 'video'">
+      <div class="video_layout" v-show="parse_data.type === 'video'">
         <video :src="video_url" controls class="video-container"></video>
         <!-- <div ref="videoContainer" class="video-container"></div> -->
       </div>
+
       <div v-show="parse_data.type === 'images'">
         <div class="actions">
           <a-affix :offset-top="60">
-            <a-button @click="selectAllItems">全选</a-button>
-            <a-button @click="invertSelection">反选</a-button>
-            <a-button shape="round" type="primary" @click="downloadFn('bat')">
-              <template #icon>
-                <DownloadOutlined />
-              </template>
-              批量下载</a-button
-            >
+            <a-space>
+              <a-button @click="selectAllItems">全选</a-button>
+              <a-button @click="invertSelection">反选</a-button>
+              <a-button shape="round" type="primary" @click="downloadFn('bat')">
+                <template #icon>
+                  <DownloadOutlined />
+                </template>
+                批量下载</a-button
+              >
+            </a-space>
           </a-affix>
         </div>
       </div>
@@ -117,7 +71,7 @@
 </template>
 
 <script setup>
-import { onMounted, onUnmounted, ref, reactive, watch } from "vue";
+import {  ref, reactive, watch } from "vue";
 // import "xgplayer/dist/index.min.css";
 // import Player from "xgplayer";
 import axios from "axios";
@@ -129,10 +83,10 @@ import {
   // ThunderboltOutlined,
   ExperimentOutlined,
 } from "@ant-design/icons-vue";
-import { notification } from "ant-design-vue";
+// import { notification } from "ant-design-vue";
 
 // const videoContainer = ref(null);
-const player = ref(null);
+// const player = ref(null);
 const link_url = ref("");
 const video_url = ref("");
 const parse_data = reactive({ urls: [], type: "", desc: "", format: "" });
@@ -186,9 +140,9 @@ watch(
 //   });
 // });
 
-onUnmounted(() => {
-  player.value && player.value.destroy();
-});
+// onUnmounted(() => {
+//   player.value && player.value.destroy();
+// });
 
 // const Fn = () => {};
 function getShareLink(string) {
@@ -239,13 +193,13 @@ const getData = async (target_url) => {
   message.success("获取成功");
 };
 
-const openNotification = (placement) => {
-  notification.open({
-    message: `请先勾选复选框`,
-    description: "选择需要下载的视频后，批量下载",
-    placement,
-  });
-};
+// const openNotification = (placement) => {
+//   notification.open({
+//     message: `请先勾选复选框`,
+//     description: "选择需要的保存的图片后，批量下载",
+//     placement,
+//   });
+// };
 
 const parseHandle = async () => {
   // console.log(1);
@@ -283,95 +237,60 @@ const invertSelection = () => {
   checkedImages.forEach((value, index) => {
     checkedImages[index] = !value;
   });
-    // 更新 checkAll 的状态
-    checkAll.value = checkedImages.every(value => value === true);
+  // 更新 checkAll 的状态
+  checkAll.value = checkedImages.every((value) => value === true);
 };
-
 
 const downloadFn = (index) => {
   if (index === "bat") {
-    console.log(checkedImages);
+    // console.log(checkedImages);
 
-    // if (true) {
+    // if (checkedImages.every((value) => value === false)) {
     //   // message.error('请选择视频');
     //   openNotification("top");
     //   return;
     // }
 
-    console.log("批量下载");
+    // console.log("批量下载");
     checkedImages.forEach((value, i) => {
       if (value) {
         let url = parse_data.urls[i];
         createLink(url);
       }
     });
-    
   } else {
     // console.log(index);
     let url = parse_data.urls[index];
     createLink(url);
   }
 };
-// const createLink = (url) => {
-//   const link = document.createElement("a");
-//   link.href = url;
-//   link.target = "_blank"; // 将链接目标设置为新标签页
-//   link.download = `${parse_data.desc}.${parse_data.format}`; // 可以根据需要修改文件名
-//   document.body.appendChild(link);
-//   link.click();
-//   document.body.removeChild(link);
-// };
-const createLink = async (url) => {
-    try {
-        // 使用 fetch 获取图片
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        // 将图片转换为 blob
-        const blob = await response.blob();
-        // 创建一个对象URL
-        const objectURL = URL.createObjectURL(blob);
-        // 创建一个下载链接
-        const link = document.createElement("a");
-        link.href = objectURL;
-        link.download = `${parse_data.desc}.${parse_data.format}`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        // 释放对象URL
-        URL.revokeObjectURL(objectURL);
-    } catch (error) {
-        console.error('There was a problem with the fetch operation:', error);
-    }
-};
-const columns = [
-  {
-    title: "id",
-    dataIndex: "index",
-    key: "序号",
-    customRender: ({ index }) => `${index + 1}`, // 使用 index 参数加 1 来显示序号
-    width: 40,
-  },
-  {
-    title: "全选",
-    dataIndex: "isChecked",
-    key: "全选",
-    width: 90,
-  },
 
-  {
-    title: "操作",
-    dataIndex: "action",
-  },
-];
-const data = [
-  { key: "1" },
-  { key: "2" },
-  {
-    key: "3",
-  },
-];
+const createLink = async (url) => {
+  try {
+    // 使用 fetch 获取图片
+    const response = await fetch(url);
+    if (!response.ok) {
+      message.error("网络无响应！");
+      throw new Error("网络无响应！");
+    }
+    // 将图片转换为 blob
+    const blob = await response.blob();
+    // 创建一个对象URL
+    const objectURL = URL.createObjectURL(blob);
+    // 创建一个下载链接
+    const link = document.createElement("a");
+    link.href = objectURL;
+    link.download = `${parse_data.desc}.${parse_data.format}`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    // 释放对象URL
+    URL.revokeObjectURL(objectURL);
+  } catch (error) {
+    console.error("There was a problem with the fetch operation:", error);
+  }
+};
+
 </script>
 
 <style scoped>
@@ -437,7 +356,8 @@ const data = [
   /* left: 50%; 将图片左边与容器左边对齐 */
   /* transform: translate(-50%, -50%); 使用负边距将图片居中 */
 }
-img,:deep() .ant-image-img{
+img,
+:deep() .ant-image-img {
   height: 100%;
   object-fit: contain;
   width: 100%;
@@ -474,7 +394,11 @@ img,:deep() .ant-image-img{
   top: 0;
   left: 0;
 }
-.url_input.url_input:hover :deep() .ant-input-group .ant-input-group-addon {
+.url_input{
+  max-width: 100%;
+  width: 500px;
+}
+.url_input:hover :deep() .ant-input-group .ant-input-group-addon {
   border: 2px solid #000000;
   background: #000000;
   color: #fff;
@@ -523,8 +447,10 @@ img,:deep() .ant-image-img{
 
 @media screen and (max-width: 700px) {
   .images_layout {
-  grid-template-columns:1fr 1fr;
-}
-
+    grid-template-columns: 1fr 1fr;
+  }
+  .img_card .download_btn {
+    display: block;
+  }
 }
 </style>

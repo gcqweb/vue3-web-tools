@@ -1,17 +1,12 @@
 <template>
   <section class="img-conv-fmt">
-    <div class="yuqueText">
-      <img
-        src="https://mdn.alipayobjects.com/huamei_0prmtq/afts/img/A*FhCOSJBrQaoAAAAAAAAAAAAADvuFAQ/original"
-      />
-    </div>
     <a-flex class="menu" align="center">
       <a-upload :before-upload="beforeUpload" :showUploadList="false">
         <a-button type="text"> <FileAddOutlined />打开 </a-button>
       </a-upload>
       <a-button type="text" @click="toggleFullscreen">
-        <FileAddOutlined />全屏
-      </a-button>
+        <FullscreenOutlined />全屏</a-button
+      >
     </a-flex>
     <a-row class="conv—layout" justify="center">
       <a-col class="conv-left">
@@ -131,7 +126,11 @@
 <script setup>
 import { ref, computed } from "vue";
 import { message } from "ant-design-vue";
-import { FileAddOutlined, DownloadOutlined } from "@ant-design/icons-vue";
+import {
+  FileAddOutlined,
+  DownloadOutlined,
+  FullscreenOutlined,
+} from "@ant-design/icons-vue";
 import { useFullscreenStore } from "@/store/fullscreen.js";
 
 const format = ref("jpeg");
@@ -236,9 +235,10 @@ const loadImage = () => {
     } else {
       message.error("错误读取Canvas上下文对象！");
     }
-  } else {
-    message.error("没找到图片！");
   }
+  // else {
+  //   message.error("没找到图片！");
+  // }
 };
 
 function handleScaleChange(e) {
@@ -307,10 +307,9 @@ const toggleFullscreen = () => {
 </script>
 
 <style scoped>
-.img-conv-fmt{
+.img-conv-fmt {
   max-width: 100%;
   padding: 1rem;
-
 }
 .fullscreen {
   position: fixed;
@@ -320,12 +319,9 @@ const toggleFullscreen = () => {
   width: 100%;
   height: 100%;
   background-color: #f8f9fa;
-  /* 示例背景色 */
+
 }
-.yuqueText {
-  margin: 30px 0;
-  text-align: center;
-}
+
 .menu {
   padding: 0 38px;
   height: 48px;

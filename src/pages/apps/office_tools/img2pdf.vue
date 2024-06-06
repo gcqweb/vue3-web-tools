@@ -194,7 +194,7 @@ const canvasRef = ref(null);
 const rotation = ref(0);
 const pdf_filename = ref("img2pdf");
 const fileList = ref([]);
-const BatchMode = ref(true);
+const BatchMode = ref(false);
 const loading = ref(false);
 const currentRecord = ref(null);
 
@@ -213,6 +213,7 @@ const pdfOrientation = ref([
   { label: "垂直", value: "portrait" },
   { label: "水平", value: "landscape" },
 ]); //方向，水平/垂直
+
 function debounce(func, delay) {
   let timer = null;
   return function(...args) {
@@ -246,37 +247,16 @@ watch(
           // 从数组找到对应uid的元素
           newVal.thumbUrl = canvas.toDataURL("image/jpeg", 0.5);
           fileList.value = fileList.value.map(item => item.uid === newVal.uid ? newVal : item);
-      // fileList.value[newVal.uid]
-      // console.log("newVal", newVal);
-
-    // }
   },
   { deep: true }
 );
-// watch(
-//   () => currentRecord.value,
-//   debounce(async (newVal, oldVal) => {
-//     if (newVal) {
-//       let canvas = newVal.pdfPageSize !== "无"
-//         ? await convertPdf(newVal, canvasRef.value)
-//         : await convertImg(newVal, canvasRef.value);
-//       newVal.thumbUrl = canvas.toDataURL("image/jpeg", 0.5);
-//       fileList.value = fileList.value.map(item => item.uid === newVal.uid ? newVal : item);
-//       console.log("newVal", newVal);
-//     }
-//   }, 300), // 300毫秒为防抖延迟时间
-//   { deep: true }
-// );
+
 function gridItemHandler(record) {
   currentRecord.value = record;
   autoOrientation.value = record.pdfRotation;
   rotation.value = record.imgRotation;
   selectedPageSize.value = record.pdfPageSize;
-  // createImg(record.base64).then((img) => {
-  //   imageRef.value = img;
-  //   // drawImage();
-  // });
-  // test();
+
 }
 
 const removeImage = (record) => {
@@ -289,14 +269,10 @@ const removeImage = (record) => {
   index = fileList.value.length - 1 === index ? index - 1 : index;
   fileList.value = fileList.value.filter((item) => item !== record);
   currentRecord.value = fileList.value[index];
-  // createImg(fileList.value[index].base64).then((img) => {
-  //   imageRef.value = img;
-  //   // drawImage();
-  // });
+
 };
 
 const rotatePdf = (botch = false) => {
-  // currentRecord.value.pdfRotation = autoOrientation.value;
   currentRecord.value = {...currentRecord.value, pdfRotation: autoOrientation.value};
   if (botch) {
     fileList.value.forEach((item) => {
@@ -306,11 +282,9 @@ const rotatePdf = (botch = false) => {
     });
     drewPreview();
   }
-  // drawImage();
 };
 
 const changeSelect = (batch = false) => {
-  // currentRecord.value.pdfPageSize = selectedPageSize.value;
   currentRecord.value = {...currentRecord.value, pdfPageSize: selectedPageSize.value};
   if (batch) {
     fileList.value.forEach((item) => {
@@ -320,13 +294,11 @@ const changeSelect = (batch = false) => {
     });
     drewPreview();
   }
-  // drawImage();
 };
 
-// function rotateImage(batch = false) {
+
 const rotateImage=(batch = false) =>{
   rotation.value = (rotation.value + 90) % 360;
-  // currentRecord.value.imgRotation = rotation.value;
   currentRecord.value = { ...currentRecord.value, imgRotation:rotation.value};
   
   if (batch) {
@@ -338,21 +310,10 @@ const rotateImage=(batch = false) =>{
     drewPreview();
   
   }
-  // drawImage();
-  // drewPreview();
-  // test();
+
 }
 
 const drewPreview = async (batch = false) => {
-    // if (!batch) {
-  //   let canvas =
-  //     currentRecord.value.pdfPageSize !== "无"
-  //       ? await convertPdf(currentRecord.value)
-  //       : await convertImg(currentRecord.value);
-  //   currentRecord.value.thumbUrl = canvas.toDataURL("image/jpeg", 0.5);
-  //   return;
-  // }
-
   for (let i = 0; i < fileList.value.length; i++) {
     let file = fileList.value[i];
     let canvas =
@@ -380,7 +341,7 @@ const beforeUpload = async (file) => {
   file.pdfRotation = "auto" || "portrait" || "landscape";
   file.pdfPageSize = "无" || undefined;
 
-  // console.log(file);
+
 
   // 返回 false 停止自动上传
   let base64Data = await new Promise((resolve) => {
@@ -388,12 +349,12 @@ const beforeUpload = async (file) => {
       const reader = new FileReader();
       reader.onload = (e) => resolve(e.target.result);
       reader.onerror = (e) => {
-        console.error("读取文件错误:", e);
+        // console.error("读取文件错误:", e);
         reject(e); // Reject the promise on reader error
       };
       reader.readAsDataURL(file);
     } catch (error) {
-      console.error("加载出错:", error);
+      // console.error("加载出错:", error);
       reject(error);
     }
   });
@@ -411,96 +372,6 @@ const createImg = (imgSrc) => {
     img.onerror = reject;
     img.src = imgSrc;
   });
-};
-
-const drawImage = () => {
-  if (selectedPageSize.value !== "无") {
-    // drawPdf();
-  } else {
-    // drawFullImage();
-  }
-};
-
-function drawPdf() {
-  const canvas = canvasRef.value;
-  if (canvas && imageRef.value) {
-    const ctx = canvas.getContext("2d");
-    const page = paperSize.value.find(
-      (p) => p.value === selectedPageSize.value
-    );
-    const isPortrait = autoOrientation.value === "portrait";
-    canvas.width = isPortrait ? page.width * 2 : page.height * 2;
-    canvas.height = isPortrait ? page.height * 2 : page.width * 2;
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    const rotated = rotation.value % 180 !== 0;
-    const imgWidth = rotated ? imageRef.value.height : imageRef.value.width;
-    const imgHeight = rotated ? imageRef.value.width : imageRef.value.height;
-
-    // 计算缩放比例
-    const scaleX = canvas.width / imgWidth;
-    const scaleY = canvas.height / imgHeight;
-    const scale = Math.min(scaleX, scaleY);
-
-    // 计算旋转后的图片中心点
-    const centerX = canvas.width / 2;
-    const centerY = canvas.height / 2;
-
-    ctx.save();
-    ctx.fillStyle = "#fff";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.translate(centerX, centerY);
-    ctx.rotate((rotation.value * Math.PI) / 180);
-
-    // 根据旋转角度调整图片绘制位置
-    if (rotation.value === 90 || rotation.value === 270) {
-      ctx.drawImage(
-        imageRef.value,
-        (-imgHeight * scale) / 2,
-        (-imgWidth * scale) / 2,
-        imgHeight * scale,
-        imgWidth * scale
-      );
-    } else {
-      ctx.drawImage(
-        imageRef.value,
-        (-imgWidth * scale) / 2,
-        (-imgHeight * scale) / 2,
-        imgWidth * scale,
-        imgHeight * scale
-      );
-    }
-
-    ctx.restore();
-  }
-}
-
-const drawFullImage = () => {
-  const canvas = canvasRef.value;
-  const ctx = canvas?.getContext("2d");
-
-  if (canvas && imageRef.value) {
-    // 根据图片尺寸调整canvas尺寸
-    let rotated = rotation.value % 180 !== 0;
-    canvas.width = rotated
-      ? imageRef.value.naturalHeight
-      : imageRef.value.naturalWidth;
-    canvas.height = rotated
-      ? imageRef.value.naturalWidth
-      : imageRef.value.naturalHeight;
-
-    ctx.save();
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.translate(canvas.width / 2, canvas.height / 2);
-    ctx.rotate((rotation.value * Math.PI) / 180);
-    ctx.drawImage(
-      imageRef.value,
-      -imageRef.value.naturalWidth / 2,
-      -imageRef.value.naturalHeight / 2
-    );
-    ctx.restore();
-  }
 };
 
 function downloadPdf() {
@@ -635,89 +506,6 @@ const convertPdf = async (file, canvas_element = null) => {
   } catch (err) {
     throw err; // 抛出异常
   }
-};
-
-const test = (file = null) => {
-  if (!file) {
-    file = fileList.value[0];
-  }
-  convertFile(file).then((canvas) => {
-    canvasRef.value = canvas;
-  });
-};
-const convertFile = async (file) => {
-  // try {
-  // Base64 encoded image data from the file
-  const base64ImageSrc = file.base64;
-  // Create an Image object
-  const img = await createImg(base64ImageSrc);
-  // Create a detached DOM canvas element
-  const canvas = document.createElement("canvas");
-  const ctx = canvas.getContext("2d");
-  let naturalWidth, naturalHeight;
-  let width, height;
-  let rotated = file.imgRotation % 180 !== 0;
-  let scaleX, scaleY, scale;
-  let centerX, centerY;
-
-  // If the function is called for PDF conversion
-  if (file.pdfPageSize && file.pdfPageSize !== "无") {
-    const page = paperSize.value.find((p) => p.value === file.pdfPageSize);
-    const isPortrait = file.pdfRotation === "portrait";
-    width = isPortrait ? page.width * 2 : page.height * 2;
-    height = isPortrait ? page.height * 2 : page.width * 2;
-
-    scaleX = width / (rotated ? img.naturalHeight : img.naturalWidth);
-    scaleY = height / (rotated ? img.naturalWidth : img.naturalHeight);
-    scale = Math.min(scaleX, scaleY);
-  } else {
-    // If the function is called for Image conversion
-    width = rotated ? img.naturalHeight : img.naturalWidth;
-    height = rotated ? img.naturalWidth : img.naturalHeight;
-    // No scaling is applied for simple image conversion
-    scale = 1;
-  }
-  centerX = width / 2;
-  centerY = height / 2;
-  canvas.width = width;
-  canvas.height = height;
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  // Set white background for PDF
-  // if (file.pdfPageSize) {
-  ctx.fillStyle = "#fff";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  // }
-
-  ctx.save();
-  ctx.translate(centerX, centerY);
-  ctx.rotate((file.imgRotation * Math.PI) / 180);
-
-  // Adjust image position based on rotation
-  if (rotated) {
-    ctx.drawImage(
-      img,
-      (-height * scale) / 2,
-      (-width * scale) / 2,
-      height * scale,
-      width * scale
-    );
-  } else {
-    ctx.drawImage(
-      img,
-      (-width * scale) / 2,
-      (-height * scale) / 2,
-      width * scale,
-      height * scale
-    );
-  }
-
-  ctx.restore();
-  return canvas;
-  // }
-  // catch (error) {
-  //   throw error;
-  // }
 };
 
 // 打包下载
@@ -898,7 +686,7 @@ async function downloadMultipleCanvasInOnePdf() {
 .pdf-canvas {
   max-height: 100%;
   max-width: 100%;
-  box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.2);
+  /* box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.2); */
 }
 :deep() .action-column {
   display: flex;
