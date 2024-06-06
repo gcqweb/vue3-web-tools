@@ -3,67 +3,73 @@
     <div class="layout">
       <a-typography-title :level="1" class="title">抖音解析</a-typography-title>
       <p>支持 抖音 短视频、图集解析和下载</p>
-      <a-affix :offset-top="10">
-        <a-input
-          class="url_input"
-          v-model:value="link_url"
-          placeholder="请输入抖音分享链接"
-          size="large"
-          allow-clear
-          @pressEnter="parseHandle"
-        >
-          <template #addonAfter>
-            <span @click="parseHandle" class="input_submit">
-              <ExperimentOutlined /> 解析</span
-            >
-          </template>
-        </a-input>
-      </a-affix>
+      <a-input
+        class="url_input is-sticky"
+        v-model:value="link_url"
+        placeholder="请输入抖音分享链接"
+        size="large"
+        allow-clear
+        @pressEnter="parseHandle"
+      >
+        <template #addonAfter>
+          <span @click="parseHandle" class="input_submit">
+            <ExperimentOutlined /> 解析</span
+          >
+        </template>
+      </a-input>
 
       <a-divider />
       <a-spin v-if="loading" size="large" />
-      <p v-else>{{ parse_data.desc}}</p>
+      <p v-else>{{ parse_data.desc }}</p>
 
       <div class="video_layout" v-show="parse_data.type === 'video'">
         <video :src="video_url" controls class="video-container"></video>
         <!-- <div ref="videoContainer" class="video-container"></div> -->
       </div>
 
-      <div v-show="parse_data.type === 'images'">
+      <div
+        v-show="parse_data.type === 'images'"
+        style="top: 150px"
+        class="is-sticky"
+      >
         <div class="actions">
-          <a-affix :offset-top="60">
-            <a-space>
-              <a-button @click="selectAllItems">全选</a-button>
-              <a-button @click="invertSelection">反选</a-button>
-              <a-button shape="round" type="primary" @click="downloadFn('bat')">
-                <template #icon>
-                  <DownloadOutlined />
-                </template>
-                批量下载</a-button
-              >
-            </a-space>
-          </a-affix>
+          <a-space>
+            <a-button @click="selectAllItems">全选</a-button>
+            <a-button @click="invertSelection">反选</a-button>
+            <a-button shape="round" type="primary" @click="downloadFn('bat')">
+              <template #icon>
+                <DownloadOutlined />
+              </template>
+              批量下载</a-button
+            >
+          </a-space>
         </div>
       </div>
       <div class="images_layout" v-if="parse_data.type === 'images'">
         <a-image-preview-group>
-          <div class="img_card" v-for="(item, index) in parse_data.urls">
-            <a-image alt="example" :src="item">
-              <!-- src="https://gw.alipayobjects.com/zos/antfincdn/LlvErxo8H9/photo-1503185912284-5271ff81b9a8.webp" -->
-              <template #previewMask></template>
-            </a-image>
-            <a-button
-              block
-              type="primary"
-              class="download_btn"
-              @click="downloadFn(index)"
-              >下载</a-button
-            >
-            <a-checkbox
-              class="checkbox"
-              v-model:checked="checkedImages[index]"
-            ></a-checkbox>
-          </div>
+          <!-- <div > -->
+          <a-image
+            alt="example"
+            :src="item"
+            class="img_card"
+            v-for="(item, index) in parse_data.urls"
+          >
+            <!-- src="https://gw.alipayobjects.com/zos/antfincdn/LlvErxo8H9/photo-1503185912284-5271ff81b9a8.webp" -->
+            <template #previewMask>
+              <a-button
+                block
+                type="primary"
+                class="download_btn"
+                @click.stop="downloadFn(index)"
+                >下载</a-button
+              >
+              <a-checkbox
+                class="checkbox"
+                v-model:checked="checkedImages[index]"
+                @click.stop=""
+              ></a-checkbox>
+            </template>
+          </a-image>
         </a-image-preview-group>
       </div>
     </div>
@@ -71,7 +77,7 @@
 </template>
 
 <script setup>
-import {  ref, reactive, watch } from "vue";
+import { ref, reactive, watch } from "vue";
 // import "xgplayer/dist/index.min.css";
 // import Player from "xgplayer";
 import axios from "axios";
@@ -290,10 +296,16 @@ const createLink = async (url) => {
     console.error("There was a problem with the fetch operation:", error);
   }
 };
-
 </script>
 
 <style scoped>
+.is-sticky {
+  position: sticky;
+  z-index: 1000;
+}
+.actions {
+  top: 150px;
+}
 .video-container {
   max-width: 600px;
   max-height: 337px;
@@ -322,47 +334,32 @@ const createLink = async (url) => {
   /* padding: 1rem; */
 }
 
-:deep() .ant-card {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+:deep() .ant-image-mask {
+  background: unset;
+  opacity: 1;
 }
-.img_card {
-  height: auto;
-  width: 100%;
-  max-height: 300px;
-  max-width: 200px;
-  position: relative;
-  border: 1px #f5f5f5 solid;
-  /* border-radius: 8px; */
-  display: flex;
-  overflow: hidden;
-}
-.img_card:hover {
+:deep() .ant-image:hover {
   box-shadow: 0 1px 2px -2px rgba(0, 0, 0, 0.16),
     0 3px 6px 0 rgba(0, 0, 0, 0.42), 0 5px 12px 4px rgba(0, 0, 0, 0.09);
+  border: 1px transparent solid;
 }
-:deep() .ant-image-mask {
-  background: rgb(255 255 255 / 50%);
-  background: unset;
-}
-
-.img_card :deep() .ant-image {
+:deep() .ant-image {
   height: auto;
   width: 100%;
-  /* position: absolute; */
-  /* top: 50%; 将图片顶部与容器顶部对齐 */
-  /* left: 50%; 将图片左边与容器左边对齐 */
-  /* transform: translate(-50%, -50%); 使用负边距将图片居中 */
+  display: flex;
+  overflow: hidden;
+  border: 1px #eee dashed;
+  max-width: 200px;
+  position: relative;
 }
 img,
 :deep() .ant-image-img {
-  height: 100%;
+  height: auto;
   object-fit: contain;
   width: 100%;
 }
-.img_card .download_btn {
+
+.ant-image-mask .download_btn {
   display: none;
   position: absolute;
   bottom: 0;
@@ -371,36 +368,37 @@ img,
   /* border-radius: 0 0 8px 8px; */
   border-radius: 0;
 }
-.img_card:hover .download_btn {
+.ant-image-mask:hover .download_btn {
   display: block; /* 父元素被悬停时，子元素显示为block */
 }
+
 .images_layout {
-  /* width: 100%; */
-  /* overflow: hidden; */
   margin-top: 2rem;
   display: grid;
   gap: 1rem;
   /* grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); */
   grid-template-columns: repeat(auto-fit, 200px);
   justify-content: center; /* 将网格项水平居中 */
+  user-select: none;
 }
-/* .video_layout {
-    background: #256;
-    width: 600px;
-    height: 370px;
-  } */
+
 .checkbox {
   position: absolute;
   top: 0;
   left: 0;
 }
-.url_input{
+
+.url_input {
   max-width: 100%;
   width: 500px;
+  top: 90px;
+}
+:deep() .ant-input-group .ant-input-group-addon {
+  background-color: #fff !important;
 }
 .url_input:hover :deep() .ant-input-group .ant-input-group-addon {
   border: 2px solid #000000;
-  background: #000000;
+  background: #000000 !important;
   color: #fff;
   /* text-shadow: 1px 1px #fd1755, -1px -1px #2bf2ec,
       30px 20px rgba(255, 255, 255, 0.03); */
@@ -449,7 +447,7 @@ img,
   .images_layout {
     grid-template-columns: 1fr 1fr;
   }
-  .img_card .download_btn {
+  .ant-image-mask .download_btn {
     display: block;
   }
 }
