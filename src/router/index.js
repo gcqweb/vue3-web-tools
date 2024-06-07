@@ -1,7 +1,9 @@
 // src/router/index.js
 import { createRouter, createWebHashHistory } from "vue-router";
 import routes from "./routes";
-import { defineAsyncComponent } from "vue";
+import NProgress from 'nprogress'; // 引入nprogress
+import 'nprogress/nprogress.css'; // 引入nprogress的样式
+// import { defineAsyncComponent } from "vue";
 // const AsyncComponent = defineAsyncComponent({
 //   loader: () => import('@/pages/apps/AppsLayout.vue'),
 //   loadingComponent: LoadingComponent,  // 可选，加载时显示的组件
@@ -24,5 +26,17 @@ const router = createRouter({
   },
   routes,
 });
+// 使用 beforeEach 导航守卫
+router.beforeEach((to, from, next) => {
+  // 开始进度条
+  NProgress.start();
 
+  // 继续进行导航
+  next();
+});
+
+router.afterEach(() => {
+  // 结束并重置进度条
+  NProgress.done();
+});
 export default router;
