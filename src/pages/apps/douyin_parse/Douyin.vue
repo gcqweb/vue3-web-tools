@@ -2,11 +2,11 @@
   <section class="dy-parse">
     <div class="layout">
       <a-typography-title :level="1" class="title">抖音解析</a-typography-title>
-      <p>支持 抖音 短视频、图集解析和下载</p>
+      <p>支持 抖音 / 快手<span style="font-size: 12px;">（手机端）</span> 短视频、图集解析和下载</p>
       <a-input
         class="url_input is-sticky"
         v-model:value="link_url"
-        placeholder="请输入抖音分享链接"
+        placeholder="请输入 抖音 / 快手 分享链接"
         size="large"
         allow-clear
         @pressEnter="parseHandle"
@@ -161,9 +161,19 @@ function getShareLink(string) {
   }
   return null; // 如果未找到链接则返回 null
 }
+const get_parse_mode=(url)=>{
+  // link="https://api./gcqweb/dy"
+  let link="http://fastapi-q00d.fcv3.1609541690181973.cn-hangzhou.fc.devsapp.net/gcqweb/"
+  if (url.includes("douyin")) {
+    return link+'dy';
+  } else if (url.includes("kuaishou")) {
+    return link+'ks';
+  }
+}
 // 使用axios异步发请求
-const http_url = "https://api.gcqweb.cn/dy" || "http://192.168.8.116:1996/dy/"; //|| ;
+// if (link_url.value)
 const getData = async (target_url) => {
+  const http_url = get_parse_mode(target_url) || "http://192.168.8.116:1996/dy/"; //|| ;
   const res = await axios.get(http_url, {
     params: {
       link: target_url, // 这是你要传递的参数
@@ -215,6 +225,7 @@ const parseHandle = async () => {
   // 更新视频链接
   let ShareLink = getShareLink(link_url.value);
   if (!ShareLink) return;
+  link_url.value=ShareLink;
   // console.log(ShareLink);
   loading.value = true;
   await getData(ShareLink);
@@ -286,7 +297,7 @@ const createLink = async (url) => {
     // 创建一个下载链接
     const link = document.createElement("a");
     link.href = objectURL;
-    link.download = `${parse_data.desc}.${parse_data.format}`;
+    link.download = `${parse_data.desc}.${parse_data.format||'webp'}`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
