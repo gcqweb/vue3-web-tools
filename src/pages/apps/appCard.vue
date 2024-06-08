@@ -1,7 +1,9 @@
 <template>
   <section class="main">
- 
-      <a-empty v-if="childRoutes.length<1" :image="Empty.PRESENTED_IMAGE_SIMPLE" />
+    <a-empty
+      v-if="childRoutes.length < 1"
+      :image="Empty.PRESENTED_IMAGE_SIMPLE"
+    />
 
     <div v-else class="card-list">
       <a-card hoverable v-for="(app, i) in childRoutes" :key="i">
@@ -19,7 +21,10 @@
             <a-button type="link" size="small" @click="info('like，暂未开放')"
               ><LikeFilled style="color: orange"></LikeFilled>1.2W</a-button
             >
-            <a-button type="link" size="small" @click="info('favorite，暂未开放')"
+            <a-button
+              type="link"
+              size="small"
+              @click="info('favorite，暂未开放')"
               ><HeartFilled style="color: hotpink"></HeartFilled>3.0K</a-button
             >
             <a-popconfirm
@@ -90,13 +95,13 @@
                 <template #title v-if="app?.meta?.desc">{{
                   app?.meta.desc
                 }}</template> -->
-                <a-typography-paragraph
-                  style="height: 2.7rem;color:#000;"
-                  :ellipsis="{ rows: 2 }"
-                  :content="
-                    app?.meta?.desc ? app?.meta?.desc : `Hello,Ant Design!`
-                  "
-                />
+              <a-typography-paragraph
+                style="height: 2.7rem; color: #000"
+                :ellipsis="{ rows: 2 }"
+                :content="
+                  app?.meta?.desc ? app?.meta?.desc : `Hello,Ant Design!`
+                "
+              />
               <!-- </a-tooltip> -->
 
               <div>
@@ -127,7 +132,7 @@ import { useRouter, useRoute } from "vue-router";
 import { useCurrentRouter } from "@/store/routerStore.js";
 import localStorageUtil from "@/utils/localStorage.js";
 import { message } from "ant-design-vue";
-import { Empty } from 'ant-design-vue';
+import { Empty } from "ant-design-vue";
 const props = defineProps({
   useTab: String,
   // popularTab: Boolean,
@@ -179,7 +184,7 @@ const getCategoryRoutes = (category = "/all") => {
       .filter((route) => typeof route?.meta?.use_times === "number")
       .sort((a, b) => b.meta.use_times - a.meta.use_times)
       .slice(0, 10);
-   return mostUsedRoutes;
+    return mostUsedRoutes;
   }
 
   if (props.useTab === "/new") {
@@ -190,9 +195,8 @@ const getCategoryRoutes = (category = "/all") => {
         (a, b) => new Date(b.meta.go_live_time) - new Date(a.meta.go_live_time)
       )
       .slice(0, 10);
-   return latestRoutes;
+    return latestRoutes;
   }
-
 };
 const openApp = (path) => {
   router.push(path);
