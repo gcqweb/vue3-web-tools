@@ -162,14 +162,17 @@ function getShareLink(string) {
   return null; // 如果未找到链接则返回 null
 }
 const get_parse_mode=(url)=>{
+  const protocol = window.location.protocol;
   // link="https://api./gcqweb/dy"
   // link="http://fastapi-q00d.fcv3.1609541690181973.cn-hangzhou.fc.devsapp.net/gcqweb/"
   // let link="https://tool.gcqweb.cn/gcqweb/"
-  let link="https://tool.gcqweb.cn/gcqweb/"
+  // let link="https://tool.gcqweb.cn/gcqweb/"
+  const link = `${protocol}//tool.gcqweb.cn/gcqweb/`;
+  console.log(link)
   if (url.includes("douyin")) {
-    return link+'dy';
+    return link+'dy/';
   } else if (url.includes("kuaishou")) {
-    return link+'ks';
+    return link+'ks/';
   }
 }
 // 使用axios异步发请求
