@@ -163,11 +163,11 @@ function getShareLink(string) {
 }
 const get_parse_mode=(url)=>{
   const protocol = window.location.protocol;
-  // link="https://api./gcqweb/dy"
+  // link="https://api.gcqweb.cn/"
   // link="http://fastapi-q00d.fcv3.1609541690181973.cn-hangzhou.fc.devsapp.net/gcqweb/"
   // let link="https://tool.gcqweb.cn/gcqweb/"
   // let link="https://tool.gcqweb.cn/gcqweb/"
-  const link = `${protocol}//tool.gcqweb.cn/gcqweb/`;
+  const link = `${protocol}//api.gcqweb.cn/`;
   console.log(link)
   if (url.includes("douyin")) {
     return link+'dy/';
