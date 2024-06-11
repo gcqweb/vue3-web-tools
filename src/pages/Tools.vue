@@ -142,7 +142,7 @@ import SearchInput from "@/pages/misc/searchQuery.vue";
 import Sider from "@/layout/sider/index.vue";
 const routerStore = useCurrentRouter();
 const router = useRouter();
-const selectedButton = ref(localStorageUtil.get("currentTabRouter"));
+const selectedButton = ref(localStorageUtil.get("currentTabRouter") || "/new");
 const route = useRoute();
 const routes = router.getRoutes();
 

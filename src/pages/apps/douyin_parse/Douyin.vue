@@ -39,12 +39,13 @@
           <a-space>
             <a-button @click="selectAllItems">全选</a-button>
             <a-button @click="invertSelection">反选</a-button>
-            <a-button shape="round" type="primary" @click="downloadFn('bat')">
+            <a-button shape="round" type="primary" @click="startBatchDownload">
               <template #icon>
                 <DownloadOutlined />
               </template>
               批量下载</a-button
             >
+            <!-- @click="downloadFn('bat')" -->
           </a-space>
         </div>
       </div>
@@ -96,7 +97,7 @@ import {
 
 // const videoContainer = ref(null);
 // const player = ref(null);
-const link_url = ref("");
+const link_url = ref("https://v.douyin.com/ijQnTo7a/");
 const video_url = ref("");
 const parse_data = reactive({ urls: [], type: "", desc: "", format: "" });
 const loading = ref(false);
@@ -169,9 +170,9 @@ const get_parse_mode=(url)=>{
   // link="https://api.gcqweb.cn/"
   // link="http://fastapi-q00d.fcv3.1609541690181973.cn-hangzhou.fc.devsapp.net/gcqweb/"
   // let link="https://tool.gcqweb.cn/gcqweb/"
-  // let link="https://tool.gcqweb.cn/gcqweb/"
-  const link = `${protocol}//tool.gcqweb.cn/gcqweb/`;
-  console.log(link)
+  let link="https://tool.gcqweb.cn/gcqweb/"
+  // const link = `${protocol}//192.168.8.116:1996/`;
+  // console.log(link)
   if (url.includes("douyin")) {
     return link+'dy/';
   } else if (url.includes("kuaishou")) {
@@ -290,7 +291,30 @@ const downloadFn = (index) => {
     createLink(url);
   }
 };
+function startBatchDownload() {
+  // console.log(parse_data.urls.length,checkedImages);
+  // return
+      const filesToDownload = parse_data.urls.filter((file, index) => checkedImages[index]);
+      downloadFilesInBatches(filesToDownload);
+    }
+    function downloadFilesInBatches(files) {
+      const BATCH_SIZE = 10;
 
+      function downloadBatch(startIndex) {
+        const batch = files.slice(startIndex, startIndex + BATCH_SIZE);
+        batch.forEach(file => {
+          console.log(`Downloading file ${file}`);
+          createLink(file);
+        });
+
+        // const nextIndex = startIndex + BATCH_SIZE;
+        if (startIndex + BATCH_SIZE < files.length) {
+      setTimeout(() => downloadBatch(startIndex + BATCH_SIZE), 1000);
+    }
+      }
+
+      downloadBatch(0);
+    }
 const createLink = async (url) => {
   try {
     // 使用 fetch 获取图片
