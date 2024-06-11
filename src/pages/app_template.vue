@@ -2,7 +2,6 @@
   <div class="main">
     <a-page-header
       style="
-
         border: unset;
         position: sticky;
         top: 0;
@@ -65,8 +64,8 @@
         </a-dropdown>
       </template>
     </a-page-header>
-    <router-view />
   </div>
+  <router-view />
 </template>
 <script setup>
 import { useRouter, useRoute } from "vue-router";
@@ -75,5 +74,18 @@ import {
   StarOutlined,
   ShareAltOutlined,
 } from "@ant-design/icons-vue";
+import { onMounted, ref, onUnmounted, watch } from "vue";
 const router = useRouter();
 </script>
+
+<style>
+.top {
+  transform: translateY(-90px);
+}
+.abc {
+  position: fixed;
+  z-index: 999;
+  width: 100%;
+  transition: all 0.5s;
+}
+</style>

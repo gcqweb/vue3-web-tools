@@ -165,18 +165,18 @@ function getShareLink(string) {
   }
   return null; // 如果未找到链接则返回 null
 }
-const get_parse_mode=(url)=>{
-  const protocol = window.location.protocol;//获取协议http/s
-  // link="https://api.gcqweb.cn/"
+const get_parse_mode = (url) => {
+  const protocol = window.location.protocol; //获取协议http/s
+  // let link = "https://api.gcqweb.cn/";
   // link="http://fastapi-q00d.fcv3.1609541690181973.cn-hangzhou.fc.devsapp.net/gcqweb/"
   // let link="https://tool.gcqweb.cn/gcqweb/"
   let link="https://tool.gcqweb.cn/gcqweb/"
   // const link = `${protocol}//192.168.8.116:1996/`;
   // console.log(link)
   if (url.includes("douyin")) {
-    return link+'dy/';
+    return link + "dy/";
   } else if (url.includes("kuaishou")) {
-    return link+'ks/';
+    return link + "ks/";
   }
 };
 // 使用axios异步发请求
@@ -294,27 +294,32 @@ const downloadFn = (index) => {
 function startBatchDownload() {
   // console.log(parse_data.urls.length,checkedImages);
   // return
-      const filesToDownload = parse_data.urls.filter((file, index) => checkedImages[index]);
-      downloadFilesInBatches(filesToDownload);
+  const filesToDownload = parse_data.urls.filter(
+    (file, index) => checkedImages[index]
+  );
+  downloadFilesInBatches(filesToDownload);
+}
+function downloadFilesInBatches(files) {
+  const BATCH_SIZE = 10;
+
+  async function downloadBatch(startIndex) {
+    const batch = files.slice(startIndex, startIndex + BATCH_SIZE);
+    for (const file of batch) {
+      await createLink(file);
     }
-    function downloadFilesInBatches(files) {
-      const BATCH_SIZE = 10;
+    // batch.forEach(file => {
+    //   // console.log(`Downloading file ${file}`);
+    //   await createLink(file);
+    // });
 
-      function downloadBatch(startIndex) {
-        const batch = files.slice(startIndex, startIndex + BATCH_SIZE);
-        batch.forEach(file => {
-          console.log(`Downloading file ${file}`);
-          createLink(file);
-        });
-
-        // const nextIndex = startIndex + BATCH_SIZE;
-        if (startIndex + BATCH_SIZE < files.length) {
+    // const nextIndex = startIndex + BATCH_SIZE;
+    if (startIndex + BATCH_SIZE < files.length) {
       setTimeout(() => downloadBatch(startIndex + BATCH_SIZE), 1000);
     }
-      }
+  }
 
-      downloadBatch(0);
-    }
+  downloadBatch(0);
+}
 const createLink = async (url) => {
   try {
     // 使用 fetch 获取图片
@@ -337,7 +342,7 @@ const createLink = async (url) => {
     // 释放对象URL
     URL.revokeObjectURL(objectURL);
   } catch (error) {
-    console.error("There was a problem with the fetch operation:", error);
+    console.error("取操作错误:", error);
   }
 };
 </script>

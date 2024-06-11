@@ -7,7 +7,7 @@
       出生日期：
       <a-space>
         <a-input-number
-          style="max-width: 9rem;width: 7rem;"
+          style="max-width: 9rem; width: 7rem"
           v-model:value="age"
           placeholder="YY"
           @change="calculateDays"
@@ -48,13 +48,13 @@
       <a-date-picker v-model:value="targetDate" />
       <a-button type="primary" @click="calculateDays">查看天数</a-button>
     </a-space>
-    <br/><br/>
+    <br /><br />
     <lifeSquare :age="age"></lifeSquare>
   </section>
 </template>
 
 <script setup>
-import { computed, ref,watch } from "vue";
+import { computed, ref, watch } from "vue";
 import dayjs from "dayjs";
 import { message } from "ant-design-vue";
 import lifeSquare from "./life-square.vue";
@@ -67,19 +67,19 @@ const daysPast = ref("n");
 const minDay = ref(1);
 const maxDay = ref(28);
 // const age = ref(dayjs().year() - year.value);
-const age =  ref(dayjs().year() - year.value)
+const age = ref(dayjs().year() - year.value);
 watch(year, (newVal) => {
-  if(newVal.length !== 4)return;
-  age.value = dayjs().year() - newVal; 
-    });
-    watch(age, (newVal) => {
-
-      year.value = dayjs().year() - newVal; 
-    });
+  // console.log("year", newVal);
+  if (newVal.length !== 4) return;
+  age.value = dayjs().year() - newVal;
+});
+watch(age, (newVal) => {
+  year.value = dayjs().year() - newVal;
+});
 // console.log(age.value);
 const calculateDays = () => {
-  daysPast.value = "n";
-  if (!year.value || !month.value || !day.value || year.value.length !== 4) {
+  // daysPast.value = "n";
+  if (!year.value || !month.value || !day.value || year.value.toString().length !== 4) {
     // message.error("请输入完整的生日信息");
     return;
   }
@@ -89,7 +89,7 @@ const calculateDays = () => {
   // 创建生日日期对象
   const birthday = dayjs(`${year.value}-${month.value}-${day.value}`);
   if (!birthday.isValid()) {
-    // message.error("输入的生日信息不合法");
+    message.error("输入的生日信息不合法");
     return;
   }
 
