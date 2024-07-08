@@ -60,17 +60,17 @@ const office_tool_routes = [
       go_live_time: new Date("2024-5-30"),
     },
   },
-  // {
-  //   path: "/pdf2img",
-  //   name: "pdf2img",
-  //   component: () => import("@/pages/apps/office_tools/pdf2img.vue"),
-  //   meta: {
-  //     label: "pdf转图片",
-  //     icon: h(MailOutlined),
-  //     app_icon: "icon-geshitxt",
-  //     go_live_time: new Date("2024-5-30"),
-  //   },
-  // },
+  {
+    path: "/hex",
+    name: "hexconv",
+    component: () => import("@/pages/apps/office_tools/hexconv.vue"),
+    meta: {
+      label: "进制转换",
+      icon: h(MailOutlined),
+      app_icon: "icon-binarycode",
+      go_live_time: new Date("2024-7-8"),
+    },
+  },
   // {
   //   path: "/base64",
   //   name: "base64",

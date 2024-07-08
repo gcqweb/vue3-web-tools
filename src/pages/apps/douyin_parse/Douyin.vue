@@ -167,6 +167,7 @@ function getShareLink(string) {
 }
 const get_parse_mode = (url) => {
   const protocol = window.location.protocol; //获取协议http/s
+  message.success(protocol);
   // let link = "https://api.gcqweb.cn/";
   // link="http://fastapi-q00d.fcv3.1609541690181973.cn-hangzhou.fc.devsapp.net/gcqweb/"
   // let link="https://tool.gcqweb.cn/gcqweb/"
@@ -183,12 +184,16 @@ const get_parse_mode = (url) => {
 // if (link_url.value)
 const getData = async (target_url) => {
   const http_url =
-    get_parse_mode(target_url) || "http://192.168.8.116:1996/dy/"; //|| ;
+  get_parse_mode(target_url) || "http://192.168.8.116:1996/dy/"; //|| ;
+  try {
   const res = await axios.get(http_url, {
     params: {
       link: target_url, // 这是你要传递的参数
     },
+    timeout: 8000, // 设置超时时间为8秒，单位是毫秒
   });
+
+
   // console.log(res);
   if (res.status === 200) {
     // console.log(res.data.parse_data, 8765554);
@@ -217,6 +222,18 @@ const getData = async (target_url) => {
     // player.value.pause();
   }
   message.success("获取成功");
+
+} catch (error) {
+  if (axios.isAxiosError(error) && error.code === 'ECONNABORTED') {
+    message.error("服务器响超时应！");
+    // 处理超时的情况
+    // console.error('请求超时');
+  } else {
+    // 处理其他错误
+    console.error('发生错误', error);
+  }
+  loading.value = false;
+}
 };
 
 // const openNotification = (placement) => {

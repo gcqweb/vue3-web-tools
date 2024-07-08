@@ -128,7 +128,7 @@ const img_tool_routes = [
       label: "批量图片压缩（按大小）",
       icon: h(MailOutlined),
       desc: "将图片批量压缩到指定大小，支持jpg,png格式。",
-      app_icon: "icon-filesimg",
+      app_icon: "icon-yasuo-img",
       go_live_time: new Date("2024-5-30"),
     },
   },
