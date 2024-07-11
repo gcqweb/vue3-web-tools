@@ -25,17 +25,17 @@ const text_tool_routes = [
       go_live_time: new Date("2024-5-30"),
     },
   },
-  // {
-  //   path: "/base64",
-  //   name: "base64",
-  //   component: () => import("@/pages/about/About.vue"),
-  //   meta: {
-  //     label: "文本2",
-  //     icon: h(MailOutlined),
-  //     app_icon: "icon-wenjiangeshi-txt",
-  //     go_live_time: new Date("2024-5-30"),
-  //   },
-  // },
+  {
+    path: "/base64Conv",
+    name: "base64",
+    component: () => import("@/pages/apps/text_tools/base64Conv.vue"),
+    meta: {
+      label: "base64转码/解码",
+      icon: h(MailOutlined),
+      app_icon: "icon-wenjiangeshi-txt",
+      go_live_time: new Date("2024-5-30"),
+    },
+  },
 ];
 
 export default text_tool_routes;
