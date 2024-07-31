@@ -32,6 +32,7 @@ const text_tool_routes = [
     meta: {
       label: "base64转码/解码",
       icon: h(MailOutlined),
+      desc: "base64转码/解码",
       app_icon: "icon-wenjiangeshi-txt",
       go_live_time: new Date("2024-5-30"),
     },

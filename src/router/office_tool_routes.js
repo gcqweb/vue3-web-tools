@@ -68,6 +68,7 @@ const office_tool_routes = [
       label: "进制转换",
       icon: h(MailOutlined),
       app_icon: "icon-binarycode",
+      desc: "2-36进制相互转换",
       go_live_time: new Date("2024-7-8"),
     },
   },
