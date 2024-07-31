@@ -77,14 +77,14 @@ import axios from "axios";
 const dividerPosition = ref("100%");
 const isDragging = ref(false);
 
-const startDragging = () => {
+const startDragging = (event) => {
   isDragging.value = true;
+  event.preventDefault(); // 防止触摸事件与点击事件冲突
 };
 
 const stopDragging = () => {
   isDragging.value = false;
 };
-
 const onMouseMove = (event) => {
   // 禁止默认浏览器行为
   event.preventDefault();
@@ -96,15 +96,28 @@ const onMouseMove = (event) => {
     dividerPosition.value = `${newDividerPosition}%`;
   }
 };
-
+const onTouchMove = (event) => {
+  if (isDragging.value) {
+    const container = event.target.closest('.container');
+    const rect = container.getBoundingClientRect();
+    const touch = event.touches[0];
+    const offsetX = touch.clientX - rect.left;
+    const newDividerPosition = (offsetX / rect.width) * 100;
+    dividerPosition.value = `${newDividerPosition}%`;
+  }
+};
 onMounted(() => {
-  window.addEventListener("mouseup", stopDragging);
-  window.addEventListener("mousemove", onMouseMove);
+  window.addEventListener('mouseup', stopDragging);
+  window.addEventListener('mousemove', onMouseMove);
+  window.addEventListener('touchend', stopDragging);
+  window.addEventListener('touchmove', onTouchMove);
 });
 
 onBeforeUnmount(() => {
-  window.removeEventListener("mouseup", stopDragging);
-  window.removeEventListener("mousemove", onMouseMove);
+  window.removeEventListener('mouseup', stopDragging);
+  window.removeEventListener('mousemove', onMouseMove);
+  window.removeEventListener('touchend', stopDragging);
+  window.removeEventListener('touchmove', onTouchMove);
 });
 
 watchEffect(() => {
@@ -259,5 +272,10 @@ onMounted(() => {
   background: red;
   cursor: ew-resize;
   transform: translateX(-50%);
+}
+@media screen and (max-width: 600px) {
+  .rmbg{
+  width:unset; 
+}
 }
 </style>
