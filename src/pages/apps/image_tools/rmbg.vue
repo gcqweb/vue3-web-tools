@@ -68,9 +68,9 @@ import {
   DownloadOutlined,
 } from "@ant-design/icons-vue";
 // 引入两张图片
-import img_left from "@/assets/_image.png";
-import img_right from "@/assets/1.jpg";
-import png from "@/assets/123.png";
+// import img_left from "@/assets/_image.png";
+// import img_right from "@/assets/1.jpg";
+// import png from "@/assets/123.png";
 import { Table, message } from "ant-design-vue";
 import axios from "axios";
 
