@@ -43,7 +43,7 @@
             class="image"
             draggable="false"
           />
-          <div class="divider" @mousedown="startDragging"></div>
+          <div class="divider" @mousedown="startDragging" @touchstart="startDragging"></div>
         </div>
         <img
           :src="previewImageUrl"
