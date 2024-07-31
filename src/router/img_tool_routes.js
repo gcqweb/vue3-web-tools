@@ -185,6 +185,20 @@ const img_tool_routes = [
       },
     },
   },
+  {
+    path: "/rmbg",
+    name: "rmbg",
+    component: () => import("@/pages/apps/image_tools/rmbg.vue"),
+
+    meta: {
+      label: "简单抠图",
+      icon: h(MailOutlined),
+      desc: "使用开源模型RMBG-1.4抠图",
+      // app_icon: "icon-zhengjianzhao",
+      app_icon: "icon-runfu",
+      go_live_time: new Date("2024-8-1"),
+    },
+  },
   // {
   //   path: "/video",
   //   name: "video",

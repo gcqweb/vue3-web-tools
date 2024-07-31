@@ -38,7 +38,7 @@
     <br />
     <div>
       <div class="panel-body">
-        <p><strong>Base64编码说明，什么是Base64编码</strong></p>
+        <h3>Base64编码说明，什么是Base64编码</h3>
         <p>
           　　Base64编码是一种用64个字符来表示任意二进制数据的方法，常用于在URL、Cookie、网页中传输二进制数据。
         </p>
@@ -52,6 +52,7 @@
         <p>
           　　Base64常用于处理文本数据的场合，表示、传输、存储一些二进制数据，包括MIME的电子邮件及XML的一些复杂数据。
         </p>
+        <br>
         <h3>Base64编码原理</h3>
         <p>
           Base64的编码都是按字符串长度，以每3个8bit的字符为一组；<br />
@@ -61,6 +62,7 @@
           然后将这4个8bit的字节转换成10进制，对照Base64编码表
           （下表），得到对应编码后的字符。
         </p>
+        <br>
         <h3>Base64编码表</h3>
         <table class="table table-bordered table-striped text-center">
           <tbody>

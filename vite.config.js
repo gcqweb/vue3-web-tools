@@ -14,6 +14,7 @@ export default defineConfig({
       ],
     }),
   ],
+  base: './', // 设置相对路径
 
   resolve: {
     alias: {

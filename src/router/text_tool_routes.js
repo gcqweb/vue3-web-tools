@@ -36,6 +36,17 @@ const text_tool_routes = [
       go_live_time: new Date("2024-5-30"),
     },
   },
+  {
+    path: "/test",
+    name: "test",
+    component: () => import("@/pages/apps/text_tools/test.vue"),
+    meta: {
+      label: "test",
+      icon: h(MailOutlined),
+      app_icon: "icon-wenjiangeshi-txt",
+      go_live_time: new Date("2024-5-30"),
+    },
+  },
 ];
 
 export default text_tool_routes;
