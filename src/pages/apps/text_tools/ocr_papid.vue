@@ -59,7 +59,7 @@ async function beforeUpload(file) {
     const formData = new FormData();
     formData.append("file", file);
     await axios
-      .post("https://api.gcqweb.cn/gcqweb/ocr_papid/", formData, {
+      .post("https://api.gcqweb.cn/ocr_papid/", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       })
       .then((response) => {
@@ -93,14 +93,14 @@ async function beforeUpload(file) {
   margin: 0 auto;
   position: relative;
   width: 100%;
-  height: 500px;
+  /* height: 500px; */
   overflow: hidden;
 }
 
 .image-wrapper {
   position: relative;
   width: 100%;
-  height: 100%;
+  height: 500px;
 }
 
 .image {
