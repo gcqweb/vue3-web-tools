@@ -21,9 +21,11 @@
       <a-button v-show="responseImageUrl" @click="download" type="primary" size="large"
         ><DownloadOutlined />保存抠图</a-button
       >
+      <p v-for="txt in text">
+      {{ txt[1] }}</p>
     </a-spin>
     <!-- <a-spin :spinning="loading"> -->
-    <div class="container" v-if="previewImageUrl">
+    <!-- <div class="container" v-if="previewImageUrl">
       <div class="image-wrapper" draggable="false">
         <div v-if="!loading">
           <img
@@ -41,7 +43,7 @@
           draggable="false"
         />
       </div>
-    </div>
+    </div> -->
     <!-- </a-spin> -->
   </section>
 </template>
@@ -57,12 +59,12 @@ import {
   DownloadOutlined,
 } from "@ant-design/icons-vue";
 // 引入两张图片
-import img_left from "@/assets/_image.png";
-import img_right from "@/assets/1.jpg";
+// import img_left from "@/assets/_image.png";
+// import img_right from "@/assets/1.jpg";
 import png from "@/assets/123.png";
 import { Table, message } from "ant-design-vue";
 import axios from "axios";
-
+const text=ref("");
 const dividerPosition = ref("100%");
 const isDragging = ref(false);
 
@@ -148,12 +150,12 @@ async function beforeUpload(file) {
     const formData = new FormData();
     formData.append("file", file);
     await axios
-      .post("https://api.gcqweb.cn/rmbg/", formData, {
+      .post("https://api.gcqweb.cn/gcqweb/ocr_papid/", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       })
       .then((response) => {
-        if (response.data && response.data.image_url) {
-          responseImageUrl.value = response.data.image_url;
+        if (response.data && response.data.ocr_data) {
+          text.value = response.data.ocr_data;
         } else {
           throw new Error("Invalid response");
         }
